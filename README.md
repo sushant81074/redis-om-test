@@ -37,4 +37,4 @@ cd redis-om-test
 - **Email**: Replace `sushant94601@gmail.com` with your actual contact email.
 - **License**: Update the license section if you're using a different license.
 
-This `README.md` provides comprehensive information about the project, including installation, usage, and API documentation. Happy Coding(smileeyes) 
+This `README.md` provides comprehensive information about the project, including installation, usage, and API documentation. (Happy Coding 😊👍)
