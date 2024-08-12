@@ -19,13 +19,15 @@ export const signIn = async (req, res) => {
       .equals(email)
       .return.first();
 
+    console.log(userExists);
+
     if (!userExists) {
       password = await bcrypt.hash(password, 10);
       userExists = await userRepository.save({ username, email, password });
     }
 
     let accessToken = await jwt.sign(
-      { username: userExists.username, email: username.email },
+      { username: userExists.username, email: userExists.email },
       "process.env.ACCESS_TOKEN_SECRET",
       { expiresIn: "1d" }
     );
@@ -42,6 +44,24 @@ export const signIn = async (req, res) => {
           "user sign-in successful"
         )
       );
+  } catch (error) {
+    console.error("error :", error?.message);
+
+    return res
+      .status(error?.statusCode || 500)
+      .send(new ApiError(error?.statusCode || 500, error?.message));
+  }
+};
+
+export const signOut = async (req, res) => {
+  try {
+    if (!req.user || !req.user?.email)
+      throw new ApiError(401, "unauthorized user");
+
+    return res
+      .clearCookie("accessToken", options)
+      .status(200)
+      .send(new ApiResponse(200, {}, "user sign-out successful"));
   } catch (error) {
     console.error("error :", error?.message);
 

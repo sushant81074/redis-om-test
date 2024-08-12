@@ -1,5 +1,6 @@
 import express from "express";
 import { router as user } from "./routes/user.routes.js";
+import { router as notes } from "./routes/notes.routes.js";
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", user);
+app.use("/notes", notes);
 
 app.listen(8080, () => console.log("server running on port 8080"));
