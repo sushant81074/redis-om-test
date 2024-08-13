@@ -145,27 +145,26 @@ export const deleteNote = async (req, res) => {
 
     if (!title) throw new ApiError(400, "title not sent");
 
-    let noteId = await notesRepository
+    let note = await notesRepository
       .search()
       .where("title")
       .equals(title)
       .return.firstId();
 
-    noteId = await notesRepository.fetch(noteId);
+    // noteId = await notesRepository.fetch(noteId);
 
-    delete noteId["title"];
-    delete noteId["content"];
-    delete noteId["color"];
-    delete noteId["user"];
+    // delete noteId["title"];
+    // delete noteId["content"];
+    // delete noteId["color"];
+    // delete noteId["user"];
     // delete noteId["Symbol(entityId)"];
     // delete noteId["Symbol(entityKeyName)"];
 
-    let result = await notesRepository.save(noteId);
-    console.log(result);
+    await notesRepository.expire(note, 0);
 
     return res
       .status(200)
-      .send(new ApiResponse(204, result, "note deleted successfully"));
+      .send(new ApiResponse(204, note, "note deleted successfully"));
   } catch (error) {
     console.error("error :", error?.message);
 
